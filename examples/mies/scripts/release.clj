@@ -1,11 +1,11 @@
-(require '[cljs.build.api :as b])
+(require '[cljs.build.api :as b]
+         '[clojure.edn :as edn])
+
+(def proj (edn/read-string (slurp "cljs.edn")))
 
 (println "Building ...")
 
 (let [start (System/nanoTime)]
   (b/build "src"
-    {:output-to "release/foo.js"
-     :output-dir "release"
-     :optimizations :advanced
-     :verbose true})
+    (-> proj :builds :release))
   (println "... done. Elapsed" (/ (- (System/nanoTime) start) 1e9) "seconds"))

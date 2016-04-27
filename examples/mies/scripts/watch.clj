@@ -1,6 +1,7 @@
-(require '[cljs.build.api :as b])
+(require '[cljs.build.api :as b]
+         '[clojure.edn :as edn])
+
+(def proj (edn/read-string (slurp "cljs.edn")))
 
 (b/watch "src"
-  {:main 'foo.core
-   :output-to "out/foo.js"
-   :output-dir "out"})
+  (-> proj :builds :dev))
