@@ -1,10 +1,6 @@
-# foo
+# Mies example
 
-FIXME: Write a one-line description of your library/project.
-
-## Overview
-
-FIXME: Write a paragraph about the library/project and highlight its goals.
+Created from `lein new mies foo`
 
 ## Setup
 
@@ -25,9 +21,9 @@ To start an auto-building Node REPL:
 To get source map support in the Node REPL:
 
     lein npm install
-    
+
 To start a browser REPL:
-    
+
 1. Uncomment the following lines in src/foo/core.cljs:
 ```clojure
 ;; (defonce conn
@@ -37,20 +33,14 @@ To start a browser REPL:
 3. Browse to `http://localhost:9000` (you should see `Hello world!` in the web console)
 4. (back to step 3) you should now see the REPL prompt: `cljs.user=>`
 5. You may now evaluate ClojureScript statements in the browser context.
-    
+
 For more info using the browser as a REPL environment, see
 [this](https://github.com/clojure/clojurescript/wiki/The-REPL-and-Evaluation-Environments#browser-as-evaluation-environment).
-    
+
 Clean project specific out:
 
     lein clean
-     
+
 Build a single release artifact with the following script and then open `index_release.html` in your browser.
 
     ./scripts/release
-
-## License
-
-Copyright © 2015 FIXME
-
-Distributed under the Eclipse Public License either version 1.0 or (at your option) any later version.
