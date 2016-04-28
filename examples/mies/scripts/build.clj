@@ -5,7 +5,7 @@
 
 (println "Building ...")
 
-(let [start (System/nanoTime)]
-  (b/build "src"
-    (-> proj :builds :dev))
+(let [start (System/nanoTime)
+      config (-> proj :builds :dev)]
+  (b/build (:src config) config)
   (println "... done. Elapsed" (/ (- (System/nanoTime) start) 1e9) "seconds"))

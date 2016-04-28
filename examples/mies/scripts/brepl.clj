@@ -6,8 +6,8 @@
 
 (def proj (edn/read-string (slurp "cljs.edn")))
 
-(b/build "src"
-  (-> proj :builds :dev))
+(let [config (-> proj :builds :dev)]
+  (b/build (:src config) config))
 
 (repl/repl (browser/repl-env)
   :output-dir (-> proj :builds :dev :output-dir))
