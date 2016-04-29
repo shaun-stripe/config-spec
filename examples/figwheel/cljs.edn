@@ -1,0 +1,15 @@
+;; build config shared across all tools
+{:builds {:dev {:src "src"
+                :figwheel true
+                :compiler {:main foo.core
+                           :asset-path "js/out"
+                           :output-to "resources/public/js/foo.js"
+                           :output-dir "resources/public/js/out"
+                           :optimizations :none
+                           :verbose true}}
+          :release {:src "src"
+                    :compiler {:asset-path "js/release"
+                               :output-to "resources/public/js/foo.min.js"
+                               :output-dir "resources/public/js/release"
+                               :optimizations :advanced
+                               :verbose true}}}}
