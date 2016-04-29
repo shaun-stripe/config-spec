@@ -1,12 +1,1 @@
-{:name "cljsbuild-example"
- :version "0.0.0"
- :builds {:dev {:src "src"
-                :compiler {:main foo.core
-                           :output-to "out/foo.js"
-                           :output-dir "out"
-                           :verbose true}}
-          :release {:src "src"
-                    :compiler {:output-to "release/foo.js"
-                               :output-dir "release"
-                               :optimizations :advanced
-                               :verbose true}}}}
+../cljs.edn

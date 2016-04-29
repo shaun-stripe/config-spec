@@ -1,0 +1,11 @@
+;; build config shared across all tools
+{:builds {:dev {:src "src"
+                :compiler {:main foo.core
+                           :output-to "out/foo.js"
+                           :output-dir "out"
+                           :verbose true}}
+          :release {:src "src"
+                    :compiler {:output-to "release/foo.js"
+                               :output-dir "release"
+                               :optimizations :advanced
+                               :verbose true}}}}
