@@ -1,8 +1,9 @@
-;; build config shared across all tools
+;; common config (used by cljsbuild and mies)
 {:builds {:dev {:src "src"
                 :compiler {:main foo.core
                            :output-to "out/foo.js"
                            :output-dir "out"
+                           :optimizations :none
                            :verbose true}}
           :release {:src "src"
                     :compiler {:output-to "release/foo.js"
