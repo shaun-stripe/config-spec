@@ -4,7 +4,7 @@
   :plugins [[lein-cljsbuild "1.1.3"]]
 
   ;; Hypothetical option load cljs.edn
-  :cljsbuild {:use-cljs-edn true}
+  ;; :cljsbuild {:use-cljs-edn true}
 
   ;; What the option above would expand to:
   :cljsbuild {:builds
