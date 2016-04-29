@@ -1,4 +1,3 @@
-;; build config shared across all tools
 {:builds {:dev {:src "src"
                 :figwheel true
                 :compiler {:main foo.core
