@@ -1,12 +1,12 @@
 {:name "mies-example"
  :version "0.0.0"
  :builds {:dev {:src "src"
-                :main foo.core
-                :output-to "out/foo.js"
-                :output-dir "out"
-                :verbose true}
+                :compiler {:main foo.core
+                           :output-to "out/foo.js"
+                           :output-dir "out"
+                           :verbose true}}
           :release {:src "src"
-                    :output-to "release/foo.js"
-                    :output-dir "release"
-                    :optimizations :advanced
-                    :verbose true}}}
+                    :compiler {:output-to "release/foo.js"
+                               :output-dir "release"
+                               :optimizations :advanced
+                               :verbose true}}}}

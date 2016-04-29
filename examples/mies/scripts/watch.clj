@@ -3,5 +3,5 @@
 
 (def proj (edn/read-string (slurp "cljs.edn")))
 
-(let [config (-> proj :builds :dev)]
-  (b/watch (:src config) config))
+(let [{:keys [src compiler]} (-> proj :builds :dev)]
+  (b/watch src compiler))
