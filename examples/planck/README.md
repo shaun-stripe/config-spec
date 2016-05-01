@@ -59,5 +59,5 @@ with lein or boot.
 ```
 $ planck -c`lein classpath`
 or
-$ planck -c`boot show-c`
+$ planck -c`boot show -c`
 ```
