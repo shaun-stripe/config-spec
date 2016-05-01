@@ -1,0 +1,2 @@
+{:require [foo.core]
+ :compiler-options {:optimizations :none}}
