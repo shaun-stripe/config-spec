@@ -6,6 +6,8 @@ some build options to be specified.
 
 ## Example Planck project
 
+> __NOTE__: requires a snapshot build of Planck 1.12 (for foreign-libs and opts.clj)
+
 If we wish to install JS dependencies for use in Planck, we specify them in package.json
 as standard and run:
 
@@ -59,4 +61,3 @@ $ planck -c`lein classpath`
 or
 $ planck -c`boot show-c`
 ```
-
