@@ -1,0 +1,4 @@
+{:require [foo.core]
+ :compiler-options {:optimizations :none
+                    :asset-path "js/foo.out"
+                    :verbose true}}

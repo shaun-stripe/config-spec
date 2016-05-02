@@ -1,0 +1,3 @@
+{:require [foo.core]
+ :compiler-options {:optimizations :advanced
+                    :verbose true}}

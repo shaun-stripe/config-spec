@@ -1,0 +1,12 @@
+{:builds {:dev {:src "src"
+                :compiler {:main foo.core
+                           :output-to "js/foo.js"      ; <-- not relative to project root, but the target path in boot (i.e. target/js/foo.js)
+                           ; :output-dir "js/foo.out"  ; <-- must be implied in boot, thus ignored in cljs.edn
+                           :optimizations :none
+                           :verbose true}}
+          :release {:src "src"
+                    :compiler {:main foo.core
+                               :output-to "js/foo.min.js"      ; <-- not relative to project root, but the target path in boot (i.e. target/js/foo.min.js)
+                               ; :output-dir "js/foo.min.out"  ; <-- must be implied in boot, thus ignored in cljs.edn
+                               :optimizations :advanced
+                               :verbose true}}}}
