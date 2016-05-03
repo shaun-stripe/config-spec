@@ -17,9 +17,7 @@
 (defn usage [options-summary]
   (string/join \newline
     [""
-     "Retrieve dependencies listed in a given .edn file."
-     ""
-     "Argument: your-filename.edn (defaults to cljs.edn)"
+     "Retrieve dependencies listed in a given .edn file (defaults to cljs.edn)."
      ""
      "Options:"
      options-summary
