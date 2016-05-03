@@ -116,6 +116,8 @@ particular subset.
                 [hiccups "0.3.0"]
                 ...]
 
+ :dev-dependencies [[figwheel-sidecar "0.5.0-SNAPSHOT"]]
+
  :builds {:build-id {...compiler options}
           ...}}
 ```
