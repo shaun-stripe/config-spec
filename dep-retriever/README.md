@@ -1,9 +1,9 @@
 # Dependency Retriever
 
-If cljs.edn is to allow a `:dependencies` vector, it might make sense to have
-some build-tool agnostic way to retrieve them. [Planck] and the [CLJS Quick
-Start] already rely on either of the following commands for downloading
-dependencies and resolving their classpath:
+If cljs.edn is to allow `:dependencies` and `:dev-dependencies` vectors, it
+might make sense to have some build-tool agnostic way to retrieve them.
+[Planck] and the [CLJS Quick Start] already rely on either of the following
+commands for downloading dependencies and resolving their classpath:
 
 ```
 $ lein classpath
