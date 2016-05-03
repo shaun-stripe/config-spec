@@ -5,18 +5,19 @@ some build-tool agnostic way to retrieve them. [Planck] and the [CLJS Quick
 Start] already rely on either of the following commands for downloading
 dependencies and resolving their classpath:
 
-[Planck]:http://planck-repl.org/dependencies.html
-[CLJS Quick Start]:https://github.com/clojure/clojurescript/wiki/Quick-Start#dependencies
-
 ```
 $ lein classpath
 $ boot show -c
 ```
 
-Both tools use a Clojure library `cemerick.pomegranate`, which wraps the Java
-library Aether which is the standard interface to Maven repositories.  Knowing
-this, we implement a minimal implementation of the commands above with a small
-library.
+Both tools use a Clojure library [Pomegranate], which wraps the Java library
+[Aether], the standard interface to Maven repositories.  Knowing this, we
+implement a minimal implementation of the commands above with a small library.
+
+[Planck]:http://planck-repl.org/dependencies.html
+[CLJS Quick Start]:https://github.com/clojure/clojurescript/wiki/Quick-Start#dependencies
+[Pomegranate]:https://github.com/cemerick/pomegranate/
+[Aether]:http://www.eclipse.org/aether/
 
 ## Building and Using
 
