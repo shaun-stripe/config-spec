@@ -28,12 +28,12 @@ lein uberjar
 ```
 $ ./cljs-install --help
 
-Retrieve dependencies listed in a given .edn file, and print comma-delimited classpath for use with the `java -cp` option.
+Retrieve dependencies listed in a given .edn file.
 
 Argument: your-filename.edn (defaults to cljs.edn)
 
 Options:
-  -c, --classpath   Print comma-delimited classpath of dependencies
+  -c, --classpath   Print colon-delimited classpath of dependencies
   -p, --production  Install only :dependencies
   -d, --dev         Install only :dev-dependencies
   -h, --help
