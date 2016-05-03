@@ -1,9 +1,12 @@
 # Dependency Retriever
 
-If cljs.edn is to allow a `:dependencies` vector, it might make sense
-to have some build-tool agnostic way to retrieve them.  Planck
-already relies on either of the following commands for downloading
-dependencies and resolving their classpath:
+If cljs.edn is to allow a `:dependencies` vector, it might make sense to have
+some build-tool agnostic way to retrieve them.  [Planck] and the [CLJS Quick Start]
+already rely on either of the following commands for downloading dependencies
+and resolving their classpath:
+
+[Planck]:http://planck-repl.org/dependencies.html
+[CLJS Quick Start]:https://github.com/clojure/clojurescript/wiki/Quick-Start#dependencies
 
 ```
 $ lein classpath
@@ -11,7 +14,9 @@ $ boot show -c
 ```
 
 Both tools use a Clojure library `cemerick.pomegranate`, which wraps the Java
-library Aether.
+library Aether which is the standard interface to Maven repositories.  Knowing
+this, we implement a minimal implementation of the commands above with the code
+below.
 
 ```clj
 (ns deps.core
