@@ -1,9 +1,9 @@
 # Dependency Retriever
 
 If cljs.edn is to allow a `:dependencies` vector, it might make sense to have
-some build-tool agnostic way to retrieve them.  [Planck] and the [CLJS Quick Start]
-already rely on either of the following commands for downloading dependencies
-and resolving their classpath:
+some build-tool agnostic way to retrieve them. [Planck] and the [CLJS Quick
+Start] already rely on either of the following commands for downloading
+dependencies and resolving their classpath:
 
 [Planck]:http://planck-repl.org/dependencies.html
 [CLJS Quick Start]:https://github.com/clojure/clojurescript/wiki/Quick-Start#dependencies
@@ -15,25 +15,25 @@ $ boot show -c
 
 Both tools use a Clojure library `cemerick.pomegranate`, which wraps the Java
 library Aether which is the standard interface to Maven repositories.  Knowing
-this, we implement a minimal implementation of the commands above with the code
-below.
+this, we implement a minimal implementation of the commands above with a small
+library.
 
-```clj
-(ns deps.core
-  (:require
-    [clojure.string :as string]
-    [cemerick.pomegranate.aether :as aether]))
+## Building and Using
 
-(def repos
-  (merge aether/maven-central
-         {"clojars" "http://clojars.org/repo"}))
-
-(defn retrieve [coords]
-  (->> (aether/resolve-dependencies :coordinates coords :repositories repos)
-       (aether/dependency-files)
-       (map str)
-       (join ":")))
+```
+lein uberjar
 ```
 
-If we bundled this into an uberjar, the minimal prereqs for retrieving cljs
-deps will be the JRE and this jar.
+```
+$ ./cljs-install --help
+
+Retrieve dependencies listed in a given .edn file, and print comma-delimited classpath for use with the `java -cp` option.
+
+Argument: your-filename.edn (defaults to cljs.edn)
+
+Options:
+  -c, --classpath   Print comma-delimited classpath of dependencies
+  -p, --production  Install only :dependencies
+  -d, --dev         Install only :dev-dependencies
+  -h, --help
+```
