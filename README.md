@@ -19,6 +19,9 @@ in special interfaces that differ across different build tools:
 
 ## Proposal - cljs.edn
 
+
+### Builds
+
 Define the project information as _plain data_ in a canonical file `cljs.edn`.
 The build tools can be flagged to read from this data rather than through
 specific interfaces.
@@ -26,16 +29,20 @@ specific interfaces.
 ```clj
 ;; filename: cljs.edn
 
-{ :builds {:build-id {:src "src"
+{:builds {:build-id {:src "src"
                      :compiler {:optimizations :none
                                 :main foo.core
                                 ...}
                      ...}
-          ...}}
+          ...}
+
+ ...}
 ```
 
 See the [examples/](examples) directory for how each build tool would make use
 of this data.
+
+### Dependencies
 
 Dependency information is also data that should be readable by build tools:
 
@@ -46,16 +53,25 @@ Dependency information is also data that should be readable by build tools:
                 [hiccups "0.3.0"]
                 ...]
 
- :dev-dependencies [[figwheel-sidecar "0.5.0-SNAPSHOT"]]
+ :dev-dependencies [[figwheel-sidecar "0.5.0-SNAPSHOT"]
+                    ...]
 
- :builds {:build-id {:src "src"
-                     :compiler {:optimizations :none
-                                :main foo.core
-                                ...}
-                     ...}
-          ...}}
+ ...}
 ```
 
+### Tasks
+
+```clj
+;; filename: cljs.edn
+
+{:tasks {:start "boot cljs -watch"
+         :figwheel "rlwrap lein figwheel"
+         :test "lein doo"
+         :repl "planck"
+         ...}
+
+ ...}
+```
 
 [cljs.jar]:https://github.com/clojure/clojurescript/wiki/Quick-Start
 [cljs compiler API]:https://github.com/cljsinfo/cljs-api-docs/blob/catalog/refs/compiler.md
