@@ -59,18 +59,66 @@ Dependency information is also data that should be readable by build tools:
  ...}
 ```
 
-### Tasks
+## Proposal - cljs command
+
+> Experimental
+
+Going further, we could potentially provide a `cljs` command to provide basic
+functionalities expected by a cljs user.
+
+### Dependencies
+
+Since all cljs tools currently use the same dependency retrieval code to
+install jars to the same `.m2` maven directory, we can do this ourselves (see
+demo at [dep-retriever](dep-retriever)):
+
+```
+$ cljs install
+```
+
+We can further customize install location a `:local-repo` key as lein/boot do,
+as well as specifying repository sources with `:repositories` key.
+
+### Publishing
+
+...
 
 ```clj
 ;; filename: cljs.edn
 
-{:tasks {:start "boot cljs -watch"
-         :figwheel "rlwrap lein figwheel"
-         :test "lein doo"
-         :repl "planck"
-         ...}
+{:name "group/projectname"
+ :version "0.1.0"
 
  ...}
+```
+
+```
+$ cljs publish clojars
+```
+
+### Scripts
+
+In npm, many tools are managed under a single interface by defining a
+[scripts](https://docs.npmjs.com/misc/scripts) map.  We could potentially do
+the same here:
+
+```clj
+;; filename: cljs.edn
+
+{:scripts {:start "boot cljs -watch"
+           :figwheel "rlwrap lein figwheel"
+           :test "lein doo"
+           :repl "planck"
+           ...}
+
+ ...}
+```
+
+```
+$ cljs start
+$ cljs figwheel
+$ cljs test
+$ cljs repl
 ```
 
 [cljs.jar]:https://github.com/clojure/clojurescript/wiki/Quick-Start
