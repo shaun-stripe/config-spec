@@ -4,7 +4,7 @@
 
 Standardizing ClojureScript project configuration for a simpler environment.
 
-## Problem
+## Problem #1
 
 In ClojureScript, we understand the value of storing things in a central
 place as plain data.  And yet, we wrap what should be common project configuration
@@ -17,14 +17,14 @@ in special interfaces that differ across different build tools:
 - [LightTable] does something that I don't know (TODO)
 - [cuttle] piggiebacks on lein-cljsbuild's config
 
-## Proposal - cljs.edn
+## Proposal - common config
 
+Define the project information as _plain data_ in a canonical file `cljs.edn`.
 
 ### Builds
 
-Define the project information as _plain data_ in a canonical file `cljs.edn`.
-The build tools can be flagged to read from this data rather than through
-specific interfaces.
+The build tools can be flagged to read build config from this data rather than
+through specific interfaces.
 
 ```clj
 ;; filename: cljs.edn
@@ -59,44 +59,32 @@ Dependency information is also data that should be readable by build tools:
  ...}
 ```
 
-## Proposal - cljs command
+---
 
-> Experimental
+## Problem #2
 
-Going further, we could potentially provide a `cljs` command to provide basic
-functionalities expected by a cljs user.
+There is no common interface for performing the common ClojureScript tasks for
+various projects using different build tools.
 
-### Dependencies
+## Proposal - common tasks
 
-Since all cljs tools currently use the same dependency retrieval code to
-install jars to the same `.m2` maven directory, we can do this ourselves (see
-demo at [dep-retriever](dep-retriever)):
+Create a cljs project tool for the command line, like `npm`.
+
+### Installing
+
+Since all cljs build tools currently use the same dependency retrieval code to
+install jars to the same `.m2` maven directory, the project tool can do this
+itself (see demo at [dep-retriever](dep-retriever)):
 
 ```
 $ cljs install
 ```
 
-We can further customize install location a `:local-repo` key as lein/boot do,
-as well as specifying repository sources with `:repositories` key.
+_We can further customize install location with a `:local-repo` key as
+lein/boot do, as well as specifying repository sources with `:repositories`
+key._
 
-### Publishing
-
-...
-
-```clj
-;; filename: cljs.edn
-
-{:name "group/projectname"
- :version "0.1.0"
-
- ...}
-```
-
-```
-$ cljs publish clojars
-```
-
-### Scripts
+### Running
 
 In npm, many tools are managed under a single interface by defining a
 [scripts](https://docs.npmjs.com/misc/scripts) map.  We could potentially do
@@ -119,6 +107,23 @@ $ cljs start
 $ cljs figwheel
 $ cljs test
 $ cljs repl
+```
+
+### Publishing
+
+...
+
+```clj
+;; filename: cljs.edn
+
+{:name "group/projectname"
+ :version "0.1.0"
+
+ ...}
+```
+
+```
+$ cljs publish clojars
 ```
 
 [cljs.jar]:https://github.com/clojure/clojurescript/wiki/Quick-Start
