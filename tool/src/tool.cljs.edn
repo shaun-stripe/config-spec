@@ -1,0 +1,4 @@
+;; This tells boot-cljs to create `target/server.js`
+{:require [std-cljs.core]
+ :compiler-options {:target :nodejs
+                    :optimizations :simple}}
