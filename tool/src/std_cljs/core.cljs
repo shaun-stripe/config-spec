@@ -2,7 +2,9 @@
   (:require
     [util.io :as io]))
 
-(def exec (aget (js/require "child_process") "exec"))
+(def child-process (js/require "child_process"))
+(def spawn-sync (aget child-process "spawnSync"))
+(def exec (aget child-process "exec"))
 
 (defn get-config []
   (cond
@@ -11,15 +13,21 @@
     :else nil))
 
 (defn run-cmd [cmd]
-  (let [process (exec cmd)]
-    (-> process .-stdout (.pipe js/process.stdout))
-    (-> process .-stderr (.pipe js/process.stderr))))
+  (let [p (exec cmd)]
+    (-> p .-stdout (.pipe js/process.stdout))
+    (-> p .-stderr (.pipe js/process.stderr))))
+
+(defn java-installed? []
+  (let [error (aget (spawn-sync "java") "error")]
+    (not error)))
 
 (defn install []
-  (run-cmd "java -jar dep-retriever.jar"))
+  (if (java-installed?)
+    (run-cmd "java -jar dep-retriever.jar")
+    (println "Please install Java.")))
 
 (defn custom-script [config task]
-  (when-let [cmd (get-in config [:scripts (keyword task)])]
+  (if-let [cmd (get-in config [:scripts (keyword task)])]
     (run-cmd cmd)
     (println "Unrecognized command:" task)))
 
