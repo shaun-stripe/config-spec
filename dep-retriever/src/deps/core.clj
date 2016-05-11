@@ -9,9 +9,9 @@
 (def default-edn-filename "cljs.edn")
 
 (def cli-options
-  [["-c" "--classpath"  "Print colon-delimited classpath of dependencies"]
-   ["-p" "--production" "Install only :dependencies"]
-   ["-d" "--dev"        "Install only :dev-dependencies"]
+  [["-c" "--classpath-file FILE"  "Write colon-delimited classpath to file" :default ".classpath"]
+   ["-p" "--production"           "Install only :dependencies"]
+   ["-d" "--dev"                  "Install only :dev-dependencies"]
    ["-h" "--help"]])
 
 (defn usage [options-summary]
@@ -47,6 +47,6 @@
                    production? deps
                    dev? devdeps
                    :else (concat deps devdeps))
-          classpath (retrieve coords)]
-      (when (:classpath options)
-        (println classpath)))))
+          jars (retrieve coords)
+          classpath (string/join ":" (map str jars))]
+      (spit (:classpath-file options) classpath))))

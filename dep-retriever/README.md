@@ -31,8 +31,8 @@ $ ./cljs-install --help
 Retrieve dependencies listed in a given .edn file (defaults to cljs.edn).
 
 Options:
-  -c, --classpath   Print colon-delimited classpath of dependencies
-  -p, --production  Install only :dependencies
-  -d, --dev         Install only :dev-dependencies
+  -c, --classpath-file FILE  .classpath  Write colon-delimited classpath to file
+  -p, --production                       Install only :dependencies
+  -d, --dev                              Install only :dev-dependencies
   -h, --help
 ```
