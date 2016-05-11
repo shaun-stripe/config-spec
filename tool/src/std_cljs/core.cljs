@@ -23,7 +23,7 @@
 
 (defn install []
   (if (java-installed?)
-    (run-cmd "java -jar dep-retriever.jar")
+    (run-cmd (str "java -jar " js/__dirname "/dep-retriever.jar"))
     (println "Please install Java.")))
 
 (defn custom-script [config task]
