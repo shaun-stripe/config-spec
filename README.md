@@ -39,6 +39,7 @@ through specific interfaces.
  ...}
 ```
 
+Feel free to add tool-specific config inside a build, such as `:figwheel true`.
 See the [examples/](examples) directory for how each build tool would make use
 of this data.
 
