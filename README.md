@@ -75,7 +75,7 @@ Create a cljs project tool for the command line, like `npm`.
 
 Since all cljs build tools currently use the same dependency retrieval code to
 install jars to the same `.m2` maven directory, the project tool can do this
-itself (see demo at [dep-retriever](dep-retriever)):
+itself (see demo at [dep-retriever](tool/dep-retriever)):
 
 ```
 $ cljs install
