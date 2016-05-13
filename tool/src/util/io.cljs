@@ -18,10 +18,14 @@
   (or (starts-with? path "http://")
       (starts-with? path "https://")))
 
+(defn path-exists? [path]
+  (existsSync path))
+
 (defn slurp [path]
   (if (url? path)
     (.toString (.getBody (request "GET" path request-opts)))
-    (.toString (.readFileSync fs path))))
+    (when (path-exists? path)
+      (.toString (.readFileSync fs path)))))
 
 (defn spit [path text]
   (.writeFileSync fs path text))
@@ -29,16 +33,17 @@
 (defn mkdirs [path]
   (.mkdirsSync fs-extra path))
 
-(defn path-exists? [path]
-  (existsSync path))
+(defn rm [path]
+  (try (.unlink fs path)
+       (catch e nil)))
 
 ;; Helpers
 
 (defn slurp-json [path]
-  (-> (slurp path)
-      (js/JSON.parse)
-      (js->clj :keywordize-keys true)))
+  (when-let [text (slurp path)]
+    (-> (js/JSON.parse text)
+        (js->clj :keywordize-keys true))))
 
 (defn slurp-edn [path]
-  (-> (slurp path)
-      (read-string)))
+  (when-let [text (slurp path)]
+    (read-string text)))
