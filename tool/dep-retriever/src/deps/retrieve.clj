@@ -9,10 +9,11 @@
 (defn transfer-listener
   [{:keys [type error resource] :as info}]
   (let [{:keys [name repository]} resource]
-    (case type
-      :started (println "Retrieving" name "from" repository)
-      :corrupted (when error (println (.getMessage error)))
-      nil)))
+    (binding [*out* *err*]
+      (case type
+        :started (println "Retrieving" name "from" repository)
+        :corrupted (when error (println (.getMessage error)))
+        nil))))
 
 (defn retrieve [coords]
   (aether/dependency-files

@@ -1,6 +1,0 @@
-;; This is an example cljs.edn for testing ./cljs-install
-
-{:dependencies [[org.clojure/clojurescript "1.8.51"]
-                [org.omcljs/om "1.0.0-alpha34"]
-                [rum "0.8.3"]]
- :dev-dependencies [[figwheel-sidecar "0.5.0-SNAPSHOT"]]}
