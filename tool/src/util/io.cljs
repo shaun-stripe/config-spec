@@ -35,7 +35,7 @@
 
 (defn rm [path]
   (try (.unlink fs path)
-       (catch e nil)))
+       (catch js/Error e nil)))
 
 ;; Helpers
 
