@@ -5,11 +5,14 @@
 
 ;; config data
 (def config nil)
+(def deps-cache nil)
+
+(def dep-keys [:dependencies
+               :dev-dependencies])
 
 ;; filenames
 (def file-config-edn "cljs.edn")
 (def file-config-json "cljs.json")
-(def file-classpath ".classpath")
 (def file-deps-cache ".deps-cache.edn")
 
 ;;---------------------------------------------------------------------------
@@ -19,11 +22,6 @@
 (def child-process (js/require "child_process"))
 (def spawn-sync (.-spawnSync child-process))
 (def exec (.-exec child-process))
-
-(defn run-cmd [cmd]
-  (let [p (exec cmd)]
-    (-> p .-stdout (.pipe js/process.stdout))
-    (-> p .-stderr (.pipe js/process.stderr))))
 
 (defn exit-error [& args]
   (apply js/console.error args)
@@ -55,18 +53,13 @@
 
 (declare task-install)
 
-(defn ensure-classpath! []
-  (or (io/slurp file-classpath)
-      (do (task-install) (io/slurp file-classpath))
-      (exit-error "Dependency tool failed to build classpath.")))
-
 (defn ensure-dependencies!
-  (let [curr (select-keys config [:dependencies :dev-dependencies])
-        prev (io/slurp-edn file-deps-cache)
-        stale? (not= curr prev)]
-    (when stale?
+  (let [cache (io/slurp-edn file-deps-cache)
+        stale? (not= (select-keys config dep-keys)
+                     (select-keys cache dep-keys))]
+    (if stale?
       (task-install)
-      (spit file-deps-cache (pr-str curr)))))
+      cache)))
 
 ;;---------------------------------------------------------------------------
 ;; Main Tasks
@@ -74,7 +67,21 @@
 
 (defn task-install []
   (ensure-java!)
-  (run-cmd (str "java -jar " js/__dirname "/dep-retriever.jar")))
+  (let [jar (str js/__dirname "/dep-retriever.jar")
+        deps (apply concat (map config dep-keys))
+        result (spawn-sync "java"
+                 #js["-jar" jar (pr-str deps-str)]
+                 #js{:stdio #js["pipe" ;; stdin (captured)
+                                "pipe" ;; stdout (captured)
+                                2]}) ;; stderr (printed)
+        success? (and (zero? (.-status result))
+                      (not (.-error result)))]
+    (when success?
+      (let [cache (-> config
+                      (select-keys dep-keys)
+                      (assoc :jars (string/split (.-stdout result) "\n")))]
+        (io/spit file-deps-cache (pr-str cache))
+        cache))))
 
 (defn build-classpath [{:keys [src] :as build}]
   (let [jars (string/split (ensure-classpath!) ":")
@@ -86,16 +93,16 @@
   (ensure-java!)
   (ensure-dependencies!)
   (let [build (ensure-build! id)]
-    (run-cmd
-      (string/join
-        ["java"
-         "-cp" (build-classpath build)
-         "clojure.main"
-         (str js/__dirname "/build.clj")
-         (str \' (pr-str build) \')]))))
+    (spawn-sync "java"
+      #js["-cp"
+          (build-classpath build)
+          "clojure.main"
+          (str js/__dirname "/build.clj")
+          (pr-str build)]
+      #js{:stdio "inherit"})))
 
 (defn custom-script [id]
-  (run-cmd (ensure-cmd! id)))
+  (exec-sync (ensure-cmd! id) #js{:stdio "inherit"}))
 
 (defn -main [task id]
   (set! config (ensure-config!))
