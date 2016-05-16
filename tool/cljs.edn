@@ -1,0 +1,6 @@
+{:dependencies [[org.clojure/clojurescript "1.7.228"]]
+ :builds {:tool {:src "src"
+                 :compiler {:target :nodejs
+                            :optimizations :simple
+                            :output-to "tool.js"
+                            :output-dir "out"}}}}

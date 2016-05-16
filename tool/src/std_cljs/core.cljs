@@ -15,8 +15,8 @@
 (def file-config-edn "cljs.edn")
 (def file-config-json "cljs.json")
 (def file-deps-cache ".deps-cache.edn")
-(def file-dep-retriever (str js/__dirname "/../dep-retriever/target/dep-retriever-0.1.0-standalone.jar"))
-(def file-build (str js/__dirname "/../build.clj"))
+(def file-dep-retriever (str js/__dirname "/dep-retriever/target/dep-retriever-0.1.0-standalone.jar"))
+(def file-build (str js/__dirname "/build.clj"))
 
 ;;---------------------------------------------------------------------------
 ;; Misc
