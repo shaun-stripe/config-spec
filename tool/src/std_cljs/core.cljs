@@ -20,6 +20,10 @@
 (def file-watch (str js/__dirname "/script/watch.clj"))
 (def file-repl (str js/__dirname "/script/repl.clj"))
 
+(def dir-cljs-jars (str js/__dirname "/cljs-jars/"))
+(defn file-cljs-jar [version] (str dir-cljs-jars version ".jar"))
+(defn url-cljs-jar [version] (str "https://github.com/clojure/clojurescript/releases/download/r" version "/cljs.jar"))
+
 ;;---------------------------------------------------------------------------
 ;; Misc
 ;;---------------------------------------------------------------------------
@@ -47,6 +51,15 @@
   (or (io/slurp-edn file-config-edn)
       (io/slurp-json file-config-json)
       (exit-error "No config found. Please create one in" file-config-edn "or" file-config-json)))
+
+(defn ensure-cljs-version! []
+  (let [version (:cljs-version config)
+        jar-path (file-cljs-jar version)
+        jar-url (url-cljs-jar version)]
+    (or (io/path-exists? jar-path)
+        (do (println "Downloading ClojureScript version" version)
+            (io/mkdirs dir-cljs-jars)
+            (io/download jar-url jar-path)))))
 
 (defn ensure-cmd! [id]
   (or (get-in config [:scripts (keyword id)])
@@ -90,7 +103,8 @@
 (defn build-classpath [{:keys [src] :as build}]
   (let [{:keys [jars]} (ensure-dependencies!)
         source-paths (when src (if (sequential? src) src [src]))
-        all (concat jars source-paths)]
+        cljs-jar (file-cljs-jar (:cljs-version config))
+        all (concat [cljs-jar] jars source-paths)]
     (string/join ":" all)))
 
 (defn task-script [id file-script]
@@ -112,6 +126,7 @@
 
 (defn -main [task id]
   (set! config (ensure-config!))
+  (ensure-cljs-version!)
   (cond
     (= task "install") (task-install)
     (= task "build") (task-script id file-build)

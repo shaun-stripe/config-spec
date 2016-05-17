@@ -3,3 +3,4 @@
 /.deps-cache.edn
 /out/
 /.cljs_node_repl
+/cljs-jars/

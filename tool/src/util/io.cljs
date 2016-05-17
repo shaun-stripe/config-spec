@@ -12,7 +12,7 @@
 
 (def request-opts
   #js{:headers
-       #js{:user-agent "cljsinfo/site"}})
+       #js{:user-agent "cljs-tool"}})
 
 (defn url? [path]
   (or (starts-with? path "http://")
@@ -36,6 +36,11 @@
 (defn rm [path]
   (try (.unlink fs path)
        (catch js/Error e nil)))
+
+(defn download [url path]
+  (let [response (request "GET" url request-opts)
+        buffer (.getBody response)]
+    (.writeFileSync fs path buffer)))
 
 ;; Helpers
 

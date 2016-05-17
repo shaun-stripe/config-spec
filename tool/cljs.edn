@@ -1,4 +1,4 @@
-{:dependencies [[org.clojure/clojurescript "1.7.228"]]
+{:cljs-version "1.8.51"
  :builds {:tool {:src "src"
                  :compiler {:target :nodejs
                             :optimizations :simple
