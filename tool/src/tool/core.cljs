@@ -28,6 +28,8 @@
 ;; Misc
 ;;---------------------------------------------------------------------------
 
+(def windows? (= "win32" js/process.platform))
+
 (def child-process (js/require "child_process"))
 (def spawn-sync (.-spawnSync child-process))
 (def exec-sync (.-execSync child-process))
@@ -104,8 +106,9 @@
   (let [{:keys [jars]} (ensure-dependencies!)
         source-paths (when src (if (sequential? src) src [src]))
         cljs-jar (file-cljs-jar (:cljs-version config))
-        all (concat [cljs-jar] jars source-paths)]
-    (string/join ":" all)))
+        all (concat [cljs-jar] jars source-paths)
+        sep (if windows? ";" ":")]
+    (string/join sep all)))
 
 (defn task-script [id file-script]
   (ensure-java!)
