@@ -127,7 +127,14 @@
 (defn custom-script [id]
   (exec-sync (ensure-cmd! id) #js{:stdio "inherit"}))
 
+(defn print-welcome []
+  (println)
+  (println (str (io/color :green "(cl") (io/color :blue "js)")
+                (io/color :grey " ClojureScript starting...")))
+  (println))
+
 (defn -main [task id]
+  (print-welcome)
   (set! config (ensure-config!))
   (ensure-cljs-version!)
   (cond

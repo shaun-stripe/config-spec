@@ -9,6 +9,7 @@
 (def fs-extra (js/require "fs-extra"))
 (def request (js/require "sync-request"))
 (def existsSync (js/require "exists-sync"))
+(def colors (js/require "colors/safe"))
 
 (def request-opts
   #js{:headers
@@ -41,6 +42,10 @@
   (let [response (request "GET" url request-opts)
         buffer (.getBody response)]
     (.writeFileSync fs path buffer)))
+
+(defn color [col text]
+  (let [f (aget colors (name col))]
+    (f text)))
 
 ;; Helpers
 
