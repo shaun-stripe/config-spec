@@ -2,5 +2,4 @@
  :builds {:tool {:src "src"
                  :compiler {:target :nodejs
                             :optimizations :simple
-                            :output-to "tool.js"
-                            :output-dir "out"}}}}
+                            :output-to "target/tool.js"}}}}

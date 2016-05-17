@@ -1,36 +1,44 @@
 # Tool
 
-Exploring a simple build tool, somewhere between [Quick Start] and [mies].
-Not sure if valuable yet.
+> __NOTE__: This is an experiment to learn about cljs building process.
+
+A minimal ClojureScript build tool that could use `cljs.edn`.  It provides a
+layer over the [Quick Start] scripts to provide dependency management.
+
+```
+./cljs install
+./cljs build <id>
+./cljs watch <id>
+./cljs repl [<id>]
+./cljs <script_id>
+```
 
 [Quick Start]:https://github.com/clojure/clojurescript/wiki/Quick-Start
-[mies]:https://github.com/swannodette/mies
+
+## Implementation
+
+- `src/` - top-level tool implemented in ClojureScript on Node.js
+- `dep-retriever/` - minimal java tool for downloading dependencies
+- `script/` - clojure "scripts" for accessing cljs compiler
+
 
 ## Setup
 
-First build the dep-retriever:
-
-```
-$ cd dep-retriever
-$ lein uberjar
-```
-
-Now build the tool itself:
+Install some prerequisites:
 
 ```
 $ npm install
-$ node tool.js build tool
+$ pushd dep-retriever; lein uberjar; popd
 ```
 
-This will override `tool.js`.  If it breaks, use this to restore a working version:
+And build the tool (it builds itself):
 
 ```
-$ git checkout -- tool.js
+$ ./cljs build tool
 ```
 
-## Usage
+This will override `target/tool.js`.  If it breaks, use this to restore a working version:
 
-- `node tool.js install`
-- `node tool.js build <id>`
-- `node tool.js watch <id>`
-- `node tool.js repl [<id>]`
+```
+$ git checkout target/tool.js
+```
