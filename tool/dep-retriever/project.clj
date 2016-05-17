@@ -3,4 +3,5 @@
                  [org.clojure/tools.cli "0.3.4"]
                  [com.cemerick/pomegranate "0.3.1"]]
   :main deps.core
-  :aot [deps.core])
+  :aot [deps.core]
+  :profiles {:uberjar {:aot :all}})
