@@ -1,8 +1,7 @@
 (require '[cljs.build.api :as b]
          '[clojure.edn :as edn])
 
-(def args *command-line-args*)
-(def build (edn/read-string (first args)))
+(def build (edn/read-string (first *command-line-args*)))
 
 (println "Building ...")
 

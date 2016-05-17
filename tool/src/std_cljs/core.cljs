@@ -16,7 +16,9 @@
 (def file-config-json "cljs.json")
 (def file-deps-cache ".deps-cache.edn")
 (def file-dep-retriever (str js/__dirname "/dep-retriever/target/dep-retriever-0.1.0-standalone.jar"))
-(def file-build (str js/__dirname "/build.clj"))
+(def file-build (str js/__dirname "/script/build.clj"))
+(def file-watch (str js/__dirname "/script/watch.clj"))
+(def file-repl (str js/__dirname "/script/repl.clj"))
 
 ;;---------------------------------------------------------------------------
 ;; Misc
@@ -87,15 +89,22 @@
 
 (defn build-classpath [{:keys [src] :as build}]
   (let [{:keys [jars]} (ensure-dependencies!)
-        source-paths (if (sequential? src) src [src])
+        source-paths (when src (if (sequential? src) src [src]))
         all (concat jars source-paths)]
     (string/join ":" all)))
 
-(defn task-build [id]
+(defn task-script [id file-script]
   (ensure-java!)
   (let [build (ensure-build! id)]
     (spawn-sync "java"
-      #js["-cp" (build-classpath build) "clojure.main" file-build (pr-str build)]
+      #js["-cp" (build-classpath build) "clojure.main" file-script (pr-str build)]
+      #js{:stdio "inherit"})))
+
+(defn task-repl [id]
+  (ensure-java!)
+  (let [build (when id (ensure-build! id))]
+    (spawn-sync "java"
+      #js["-cp" (build-classpath build) "clojure.main" file-repl]
       #js{:stdio "inherit"})))
 
 (defn custom-script [id]
@@ -105,7 +114,9 @@
   (set! config (ensure-config!))
   (cond
     (= task "install") (task-install)
-    (= task "build") (task-build id)
+    (= task "build") (task-script id file-build)
+    (= task "watch") (task-script id file-watch)
+    (= task "repl") (task-repl id)
     :else (custom-script task)))
 
 (set! *main-cli-fn* -main)

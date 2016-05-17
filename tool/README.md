@@ -31,4 +31,5 @@ $ git checkout -- tool.js
 
 - `node tool.js install`
 - `node tool.js build <id>`
-
+- `node tool.js watch <id>`
+- `node tool.js repl [<id>]`
