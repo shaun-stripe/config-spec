@@ -2,8 +2,9 @@
 
 > __NOTE__: This is an experiment to learn about cljs building process.
 
-A minimal ClojureScript build tool that could use `cljs.edn`.  It provides a
-layer over the [Quick Start] scripts to provide dependency management.
+A minimal ClojureScript build tool that could use `cljs.edn` or
+`package-cljs.json` config file (a la _npm_).  It provides a layer over the
+[Quick Start] scripts to provide dependency management.
 
 ```
 ./cljs install

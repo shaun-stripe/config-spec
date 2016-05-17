@@ -8,12 +8,17 @@
 (def config nil)
 (def deps-cache nil)
 
-(def dep-keys [:dependencies
-               :dev-dependencies])
+(def dep-keys
+  [:dependencies
+   :dev-dependencies])
+
+(def build-paths-to-keywordize
+  [[:compiler :optimizations]
+   [:compiler :target]])
 
 ;; filenames
-(def file-config-edn "cljs.edn")
-(def file-config-json "cljs.json")
+(def file-config-edn "package-cljs.edn")
+(def file-config-json "package-cljs.json")
 (def file-deps-cache ".deps-cache.edn")
 (def file-dep-retriever (str js/__dirname "/../dep-retriever/target/dep-retriever-0.1.0-standalone.jar"))
 (def file-build (str js/__dirname "/../script/build.clj"))
@@ -39,6 +44,55 @@
   (js/process.exit 1))
 
 ;;---------------------------------------------------------------------------
+;; JSON Config Normalization
+;;
+;; There is some additional complexity in allowing a json config file.
+;; Familiarity and its parallels to package.json is a benefit
+;; that will ease the transition to CLJS.
+;;
+;; Simplify this with Specter.
+;;---------------------------------------------------------------------------
+
+(defn transform-json-deps*
+  "Convert a dependency map to a vector of tuples:
+    Before:  {:package \"version\" ...}
+    After:   [[package \"version\"] ...]
+  "
+  [deps]
+  (if (map? deps)
+    (let [process (fn [[package version]]
+                    [(symbol (name package))
+                     version])]
+      (mapv process deps))
+    deps))
+
+(defn transform-json-deps [config]
+  (reduce
+    (fn [result dep-key]
+      (cond-> result
+        (get result dep-key) (update dep-key transform-json-deps*)))
+    config
+    dep-keys))
+
+(defn transform-json-build [[id build]]
+  [id
+   (reduce
+     (fn [result path]
+       (cond-> result
+         (get-in result path) (update-in path keyword)))
+     build
+     build-paths-to-keywordize)])
+
+(defn transform-json-builds [config]
+  (update config :builds
+    #(into {} (map transform-json-build %))))
+
+(defn transform-json [config]
+  (->> config
+       (transform-json-deps)
+       (transform-json-builds)))
+
+;;---------------------------------------------------------------------------
 ;; Validation
 ;;---------------------------------------------------------------------------
 
@@ -51,7 +105,7 @@
 
 (defn ensure-config! []
   (or (io/slurp-edn file-config-edn)
-      (io/slurp-json file-config-json)
+      (transform-json (io/slurp-json file-config-json))
       (exit-error "No config found. Please create one in" file-config-edn "or" file-config-json)))
 
 (defn ensure-cljs-version! []
