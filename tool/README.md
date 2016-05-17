@@ -18,6 +18,7 @@ $ lein uberjar
 Now build the tool itself:
 
 ```
+$ npm install
 $ node tool.js build tool
 ```
 

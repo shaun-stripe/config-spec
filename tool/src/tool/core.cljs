@@ -1,8 +1,8 @@
-(ns std-cljs.core
+(ns tool.core
   (:require
     [clojure.string :as string]
     [cljs.pprint :refer [pprint]]
-    [util.io :as io]))
+    [tool.io :as io]))
 
 ;; config data
 (def config nil)
