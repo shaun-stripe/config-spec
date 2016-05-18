@@ -4,11 +4,11 @@
 
 Standardizing ClojureScript project configuration for a simpler environment.
 
-## Problem #1
+## Problem
 
-In ClojureScript, we understand the value of storing things in a central
-place as plain data.  And yet, we wrap what should be common project configuration
-in special interfaces that differ across different build tools:
+In ClojureScript, we understand the value of storing things in a central place
+as plain data.  And yet, we wrap what should be common project configuration in
+special interfaces that differ across different build tools:
 
 - [cljs.jar] relies on either lein or boot for defining dependencies, and defines project config inline.
 - [lein-cljsbuild] uses its own project config standard, and uses lein for defining dependencies
@@ -19,7 +19,8 @@ in special interfaces that differ across different build tools:
 
 ## Proposal - common config
 
-Define the project information as _plain data_ in a canonical file `cljs.edn` or `cljs.json`.
+Define the project information as _plain data_ in a canonical file `cljs.edn`
+or `cljs.json`.
 
 ### Builds
 
@@ -58,73 +59,6 @@ Dependency information is also data that should be readable by build tools:
                     ...]
 
  ...}
-```
-
----
-
-## Problem #2
-
-There is no common interface for performing the common ClojureScript tasks for
-various projects using different build tools.
-
-## Proposal - common tasks
-
-Create a cljs project tool for the command line, like `npm`.
-
-### Installing
-
-Since all cljs build tools currently use the same dependency retrieval code to
-install jars to the same `.m2` maven directory, the project tool can do this
-itself (see demo at [dep-retriever](tool/dep-retriever)):
-
-```
-$ cljs install
-```
-
-_We can further customize install location with a `:local-repo` key as
-lein/boot do, as well as specifying repository sources with `:repositories`
-key._
-
-### Running
-
-In npm, many tools are managed under a single interface by defining a
-[scripts](https://docs.npmjs.com/misc/scripts) map.  We could potentially do
-the same here:
-
-```clj
-;; filename: cljs.edn
-
-{:scripts {:start "boot cljs -watch"
-           :figwheel "rlwrap lein figwheel"
-           :test "lein doo"
-           :repl "planck"
-           ...}
-
- ...}
-```
-
-```
-$ cljs start
-$ cljs figwheel
-$ cljs test
-$ cljs repl
-```
-
-### Publishing
-
-...
-
-```clj
-;; filename: cljs.edn
-
-{:name "group/projectname"
- :version "0.1.0"
-
- ...}
-```
-
-```
-$ cljs publish clojars
 ```
 
 [cljs.jar]:https://github.com/clojure/clojurescript/wiki/Quick-Start
