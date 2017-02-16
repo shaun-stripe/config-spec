@@ -19,8 +19,7 @@ special interfaces that differ across different build tools:
 
 ## Proposal - common config
 
-Define the project information as _plain data_ in a canonical file `cljs.edn`
-or `cljs.json`.
+Define the project information as _plain data_ in a canonical file `cljs.edn`.
 
 ### Builds
 
